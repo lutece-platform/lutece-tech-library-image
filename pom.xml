@@ -43,4 +43,10 @@
         <jiraProjectName>LIBRARYIMAGE</jiraProjectName>
         <jiraComponentId>10254</jiraComponentId>
     </properties>
+
+    <scm>
+        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/library</connection>
+        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/library</developerConnection>
+        <url>http://dev.lutece.paris.fr/viewvc/portal/trunk/plugins/library</url>
+    </scm>
 </project>
