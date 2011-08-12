@@ -41,7 +41,7 @@
     </dependencies>
     <properties>
         <jiraProjectName>LIBRARYIMAGE</jiraProjectName>
-        <jiraComponentId>10254</jiraComponentId>
+        <jiraComponentId>10300</jiraComponentId>
     </properties>
 
     <scm>
