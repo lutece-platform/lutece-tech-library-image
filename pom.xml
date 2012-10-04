@@ -10,7 +10,7 @@
     <artifactId>library-image</artifactId>
     <version>1.0.2-SNAPSHOT</version>
     <name>Lutece image library</name>
-    <packaging>lutece-plugin</packaging>
+    <packaging>jar</packaging>
     <description>Utils for image processing</description>
 
 	<repositories>
