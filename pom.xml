@@ -32,14 +32,6 @@
         </repository>
       </repositories>
 
-    <dependencies>
-	  <dependency>
-	    <groupId>fr.paris.lutece</groupId>
-	    <artifactId>lutece-core</artifactId>
-	    <version>[4.0.0,)</version>
-	    <type>lutece-core</type>
-	  </dependency>
-    </dependencies>
     <properties>
         <jiraProjectName>LIBRARYIMAGE</jiraProjectName>
         <jiraComponentId>10300</jiraComponentId>
