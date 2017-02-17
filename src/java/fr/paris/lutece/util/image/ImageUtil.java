@@ -34,11 +34,7 @@
 package fr.paris.lutece.util.image;
 
 
-import javax.imageio.ImageIO;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -46,6 +42,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 
 import org.apache.log4j.Logger;
 
@@ -55,6 +57,9 @@ import org.apache.log4j.Logger;
 public class ImageUtil
 {
 
+    /** Parameter JPG */
+    private static final String PARAMETER_JPG = "jpg";
+
     private static final Logger _logger = Logger.getLogger( ImageUtil.class );
 
     /**
@@ -63,7 +68,7 @@ public class ImageUtil
      * @param strWidth The new width
      * @param strHeight The new Height
      * @param fQuality The quality as a float between 0.0 (lower) and 1.0 (higher)
-     * @return
+     * @return bytes
      */
     public static byte[] resizeImage( Object blobImage, String strWidth, String strHeight, float fQuality )
     {
@@ -134,14 +139,16 @@ public class ImageUtil
         {
             outBuffered = new ByteArrayOutputStream();
 
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder( outBuffered );
-            JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam( image );
-
-            param.setQuality( fQuality, true );
-            encoder.setJPEGEncodeParam( param );
-
-            encoder.encode( image );
-
+            // Boilerplate to be able to set the quality
+            ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName( PARAMETER_JPG ).next( );
+            ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam( );
+            jpgWriteParam.setCompressionMode( ImageWriteParam.MODE_EXPLICIT );
+            jpgWriteParam.setCompressionQuality( fQuality );
+            jpgWriter.setOutput( new MemoryCacheImageOutputStream( outBuffered ) );
+            IIOImage outputImage = new IIOImage( image, null, null );
+            jpgWriter.write( null, outputImage, jpgWriteParam );
+            jpgWriter.dispose( );
+            outBuffered.flush( );
         }
         catch ( IOException e2 )
         {
