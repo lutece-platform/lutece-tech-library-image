@@ -42,6 +42,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -49,7 +50,8 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utils for image processing
@@ -60,7 +62,7 @@ public class ImageUtil
     /** Parameter JPG */
     private static final String PARAMETER_JPG = "jpg";
 
-    private static final Logger _logger = Logger.getLogger( ImageUtil.class );
+    private static final Logger _logger = LogManager.getLogger( ImageUtil.class );
 
     /**
      * Resize an image to a given size with a given quality using a JPEG output format
@@ -85,12 +87,12 @@ public class ImageUtil
                 // Parameters
                 double nParamWidth = Double.valueOf( strWidth );
                 double nParamHeight = Double.valueOf( strHeight );
-                double nParamRatio = BigDecimal.valueOf( nParamWidth ).divide( BigDecimal.valueOf( nParamHeight ), 6 ).doubleValue();
+                double nParamRatio = BigDecimal.valueOf( nParamWidth ).divide( BigDecimal.valueOf( nParamHeight ), RoundingMode.HALF_EVEN ).doubleValue();
 
                 // Image attributes
                 double nImageWidth = Double.valueOf( image.getWidth() );
                 double nImageHeight = Double.valueOf( image.getHeight() );
-                double nImageRatio = BigDecimal.valueOf( nImageWidth ).divide( BigDecimal.valueOf( nImageHeight ), 6 ).doubleValue();
+                double nImageRatio = BigDecimal.valueOf( nImageWidth ).divide( BigDecimal.valueOf( nImageHeight ), RoundingMode.HALF_EVEN ).doubleValue();
 
                 if ( nImageWidth > nParamWidth || nImageHeight > nParamHeight )
                 {
@@ -108,7 +110,7 @@ public class ImageUtil
                     {
                         // Set the Width target to min ( Image Width , Param Width )
                         nTargetWidth = ( nImageWidth > nParamWidth ) ? nParamWidth : nImageWidth;
-                        nTargetHeight = BigDecimal.valueOf( nTargetWidth ).divide( BigDecimal.valueOf( nImageRatio ), 6 ).doubleValue();
+                        nTargetHeight = BigDecimal.valueOf( nTargetWidth ).divide( BigDecimal.valueOf( nImageRatio ), RoundingMode.HALF_EVEN ).doubleValue();
                     }
                     BufferedImage bdest = new BufferedImage( ( ( Double ) nTargetWidth ).intValue(), ( ( Double ) nTargetHeight ).intValue(), BufferedImage.TYPE_INT_RGB );
                     Graphics2D g = bdest.createGraphics();
@@ -120,7 +122,7 @@ public class ImageUtil
             }
             catch ( IOException e )
             {
-                _logger.error( "Error ImageUtil : " + e.getMessage(), e );
+                _logger.error( "Error ImageUtil : {}", e.getMessage( ), e );
             }
         }
         return newBlobImage;
