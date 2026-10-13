@@ -39,8 +39,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * ImageUtilTest
@@ -60,7 +60,7 @@ public class ImageUtilTest
         byte[] myByteArray = ImageUtil.resizeImage( data, "40", "40", 0.8f );
         byte[] expected = loadBytes("marco_resized_jpg.jpg");
         dumpBytes("marco_resized_jpg.jpg", myByteArray);
-        Assert.assertArrayEquals(myByteArray, expected);
+        Assertions.assertArrayEquals(expected, myByteArray);
     }
 
     /**
@@ -75,9 +75,15 @@ public class ImageUtilTest
         byte[] myByteArray = ImageUtil.resizeImage( data, "40", "40", 0.8f );
         byte[] expected = loadBytes("marco_resized_png.jpg");
         dumpBytes("marco_resized_png.jpg", myByteArray);
-        Assert.assertArrayEquals(myByteArray, expected);
+        Assertions.assertArrayEquals(expected, myByteArray);
     }
 
+    /**
+     * Load a test resource.
+     * @param filename The resource name
+     * @return The resource content
+     * @throws Exception e
+     */
     private byte[] loadBytes(String filename) throws Exception {
         InputStream in = this.getClass().getResourceAsStream("/" + filename);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -93,6 +99,12 @@ public class ImageUtilTest
         return data;
     }
 
+    /**
+     * Write bytes to a file of the temporary directory.
+     * @param filename The file name
+     * @param myByteArray The bytes
+     * @throws Exception e
+     */
     private void dumpBytes(String filename, byte[] myByteArray) throws Exception {
         File baseDir = new File(System.getProperty("java.io.tmpdir"));
         File out = new File(baseDir, filename);
